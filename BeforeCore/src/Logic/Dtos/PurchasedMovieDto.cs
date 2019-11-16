@@ -2,11 +2,11 @@ using System;
 
 namespace Logic.Dtos
 {
-    public class PurchasedMovieDTO
+    public class PurchasedMovieDto
     {
         public long Id { get; set; }
 
-        public MovieDTO Movie { get; set; }
+        public MovieDto Movie { get; set; }
 
         public decimal Price { get; set; }
 

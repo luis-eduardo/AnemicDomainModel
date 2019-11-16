@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 
 namespace Logic.Dtos
 {
-    public class CustomerInListDTO
+    public class CustomerInListDto
     {
         public long Id { get; set; }
 

@@ -1,6 +1,6 @@
 namespace Logic.Dtos
 {
-    public class MovieDTO
+    public class MovieDto
     {
         public long Id { get; set; }
 

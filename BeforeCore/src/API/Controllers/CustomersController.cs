@@ -33,7 +33,7 @@ namespace Api.Controllers
                 return NotFound();
             }
 
-            var dto = new CustomerDTO
+            var dto = new CustomerDto
             {
                 Id = customer.Id,
                 Name = customer.Name,
@@ -41,12 +41,12 @@ namespace Api.Controllers
                 MoneySpent = customer.MoneySpent,
                 Status = customer.Status.ToString(),
                 StatusExpirationDate = customer.StatusExpirationDate,
-                PurchasedMovies = customer.PurchasedMovies.Select(x => new PurchasedMovieDTO
+                PurchasedMovies = customer.PurchasedMovies.Select(x => new PurchasedMovieDto
                 {
                     Price = x.Price,
                     ExpirationDate = x.ExpirationDate,
                     PurchaseDate = x.PurchaseDate,
-                    Movie = new MovieDTO
+                    Movie = new MovieDto
                     {
                         Id = x.MovieId,
                         Name = x.Movie.Name
@@ -62,7 +62,7 @@ namespace Api.Controllers
         {
             IReadOnlyList<Customer> customers = _customerRepository.GetList();
             
-            var dtos = customers.Select(x => new CustomerInListDTO
+            var dtos = customers.Select(x => new CustomerInListDto
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -76,7 +76,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Customer item)
+        public IActionResult Create([FromBody] CreateCustomerDto item)
         {
             try
             {
@@ -90,9 +90,15 @@ namespace Api.Controllers
                     return BadRequest("Email is already in use: " + item.Email);
                 }
 
-                item.Id = 0;
-                item.Status = CustomerStatus.Regular;
-                _customerRepository.Add(item);
+                var customer = new Customer {
+                    Name = item.Name,
+                    Email = item.Email,
+                    MoneySpent = 0,
+                    Status = CustomerStatus.Regular,
+                    StatusExpirationDate = null
+                };
+
+                _customerRepository.Add(customer);
                 _customerRepository.SaveChanges();
 
                 return Ok();
@@ -105,7 +111,7 @@ namespace Api.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Update(long id, [FromBody] Customer item)
+        public IActionResult Update(long id, [FromBody] UpdateCustomerDto item)
         {
             try
             {

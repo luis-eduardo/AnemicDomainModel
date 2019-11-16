@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Logic.Dtos
 {
-    public class CustomerDTO
+    public class CustomerDto
     {
         public long Id { get; set; }
 
@@ -17,6 +17,6 @@ namespace Logic.Dtos
 
         public decimal MoneySpent { get; set; }
 
-        public List<PurchasedMovieDTO> PurchasedMovies { get; set; }
+        public List<PurchasedMovieDto> PurchasedMovies { get; set; }
     }
 }
