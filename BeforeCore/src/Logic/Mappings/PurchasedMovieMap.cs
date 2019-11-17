@@ -9,7 +9,7 @@ namespace Logic.Mappings
         {
             Id(x => x.Id);
 
-            Map(x => x.Price);
+            Map(x => x.Price).CustomType<decimal>().Access.CamelCaseField(Prefix.Underscore);
             Map(x => x.PurchaseDate);
             Map(x => x.ExpirationDate).Nullable();
             Map(x => x.MovieId);
