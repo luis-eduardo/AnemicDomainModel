@@ -40,8 +40,8 @@ namespace Api.Controllers
                 Name = customer.Name.Value,
                 Email = customer.Email.Value,
                 MoneySpent = customer.MoneySpent,
-                Status = customer.Status.ToString(),
-                StatusExpirationDate = customer.StatusExpirationDate,
+                Status = customer.Status.Type.ToString(),
+                StatusExpirationDate = customer.Status.ExpirationDate,
                 PurchasedMovies = customer.PurchasedMovies.Select(x => new PurchasedMovieDto
                 {
                     Price = x.Price,
@@ -69,8 +69,8 @@ namespace Api.Controllers
                 Name = x.Name.Value,
                 Email = x.Email.Value,
                 MoneySpent = x.MoneySpent,
-                Status = x.Status.ToString(),
-                StatusExpirationDate = x.StatusExpirationDate
+                Status = x.Status.Type.ToString(),
+                StatusExpirationDate = x.Status.ExpirationDate
             }).ToList();
             
             return Json(dtos);
@@ -100,14 +100,7 @@ namespace Api.Controllers
                     return BadRequest("Email is already in use: " + item.Email);
                 }
 
-                var customer = new Customer {
-                    Name = customerNameOrError.Value,
-                    Email = emailOrError.Value,
-                    MoneySpent = Dollars.Of(0),
-                    Status = CustomerStatus.Regular,
-                    StatusExpirationDate = null
-                };
-
+                var customer = new Customer(customerNameOrError.Value, emailOrError.Value);
                 _customerRepository.Add(customer);
                 _customerRepository.SaveChanges();
 
@@ -201,7 +194,7 @@ namespace Api.Controllers
                     return BadRequest("Invalid customer id: " + id);
                 }
 
-                if (customer.Status == CustomerStatus.Advanced && !customer.StatusExpirationDate.IsExpired)
+                if (customer.Status.IsAdvanced)
                 {
                     return BadRequest("The customer already has the Advanced status");
                 }
