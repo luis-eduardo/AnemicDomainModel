@@ -46,14 +46,14 @@ namespace Logic.Entities
             Status = CustomerStatus.Regular;
         }
 
-        public virtual void AddPurchasedMovie(
-            Movie movie,
-            ExpirationDate expirationDate,
-            Dollars price)
+        public virtual void PurchaseMovie(Movie movie)
         {
-            var purchasedMovie = new PurchasedMovie(movie, this, price, expirationDate);
+            var expirationDate = movie.GetExpirationDate();
+            var price = movie.CalculatePrice(Status);
 
+            var purchasedMovie = new PurchasedMovie(movie, this, price, expirationDate);
             _purchasedMovies.Add(purchasedMovie);
+            
             MoneySpent += price;
         }
 

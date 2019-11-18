@@ -28,6 +28,8 @@ namespace Logic.Entities
             return new CustomerStatus(CustomerStatusType.Advanced, (ExpirationDate) DateTime.UtcNow.AddYears(1));
         }
 
+        public decimal GetDiscount => IsAdvanced ? 0.25m : 0;
+
         protected override bool EqualsCore(CustomerStatus other)
         {
             return Type == other.Type && ExpirationDate == other.ExpirationDate;
