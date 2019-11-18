@@ -24,6 +24,11 @@ namespace Logic.Entities
             protected set => _expirationDate = value.Date;
         }
 
+        public virtual bool IsActiveLast30Days
+            => ExpirationDate == ExpirationDate.Infinite || ExpirationDate.Date >= DateTime.UtcNow.AddDays(-30);
+
+        public virtual bool IsPurchasedThisYear => PurchaseDate > DateTime.UtcNow.AddYears(-1);
+
         protected PurchasedMovie(){}
 
         internal PurchasedMovie(Movie movie, Customer customer, Dollars price, ExpirationDate expirationDate)
